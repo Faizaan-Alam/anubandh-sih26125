@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: anubandh-postgres
+    environment:
+      POSTGRES_USER: anubandh
+      POSTGRES_PASSWORD: anubandh
+      POSTGRES_DB: anubandh
+    ports:
+      - "5432:5432"
+    volumes:
+      - anubandh_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U anubandh -d anubandh"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  anubandh_pg:

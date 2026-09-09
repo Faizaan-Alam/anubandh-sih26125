@@ -1,0 +1,73 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+coverage/
+*.tsbuildinfo
+
+# Foundry
+contracts/out/
+contracts/cache/
+contracts/broadcast/
+contracts/lib/
+contracts/foundry-pp/
+
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+packages/shared/deployments/*.json
+!packages/shared/deployments/.gitkeep
+
+# Private keys and wallets
+**/keystore/
+**/*.wallet
+**/mnemonic.txt
+**/private-keys.json
+
+# Database
+*.db
+*.db-journal
+database/data/
+.postgres-data/
+.pglite-data/
+embedded-postgres/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Test artifacts
+playwright-report/
+test-results/
+blob-report/
+.playwright/
+
+# Storage blobs (local object store)
+storage-data/
+packages/storage/data/
+
+# Misc
+.turbo/
+.cache/
+tmp/
+temp/

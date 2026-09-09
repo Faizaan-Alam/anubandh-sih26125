@@ -1,0 +1,59 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: foundry-rs/foundry-toolchain@v1
+      - name: Install contract libraries
+        working-directory: contracts
+        run: forge install OpenZeppelin/openzeppelin-contracts@v5.2.0 foundry-rs/forge-std --no-commit
+      - name: Test contracts
+        working-directory: contracts
+        run: forge test
+
+  app:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: anubandh
+          POSTGRES_PASSWORD: anubandh
+          POSTGRES_DB: anubandh
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: foundry-rs/foundry-toolchain@v1
+      - name: Install JS deps
+        run: npm install
+      - name: Generate Prisma client
+        env:
+          DATABASE_URL: postgresql://anubandh:anubandh@127.0.0.1:5432/anubandh?schema=public
+        run: npx prisma generate --schema database/prisma/schema.prisma
+      - name: Typecheck and unit tests
+        env:
+          DATABASE_URL: postgresql://anubandh:anubandh@127.0.0.1:5432/anubandh?schema=public
+        run: |
+          npm run test -w @anubandh/policy
+          npm run test -w @anubandh/crypto
+          npm run test -w backend
+      - name: Em dash check
+        run: bash scripts/check-emdash.sh

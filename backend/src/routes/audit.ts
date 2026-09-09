@@ -10,21 +10,14 @@ auditRouter.get("/events", requireAuth, requireRoles(["Admin", "Auditor", "Manag
   try {
     const tokenId = typeof req.query.tokenId === "string" ? req.query.tokenId : undefined;
     const eventName = typeof req.query.eventName === "string" ? req.query.eventName : undefined;
-    const items = await prisma.chainEvent.findMany({
-      where: {
-        ...(eventName ? { eventName } : {}),
-        ...(tokenId
-          ? {
-              payload: {
-                path: ["tokenId"],
-                equals: tokenId
-              }
-            }
-          : {})
-      },
+    const rows = await prisma.chainEvent.findMany({
+      where: eventName ? { eventName } : undefined,
       orderBy: { timestamp: "asc" },
-      take: 500
+      take: 2000
     });
+    const items = tokenId
+      ? rows.filter((row) => String((row.payload as { tokenId?: string }).tokenId ?? "") === tokenId)
+      : rows.slice(0, 500);
     res.json({ items, source: "indexed ChainEvent rows (append-only)" });
   } catch (err) {
     next(err);

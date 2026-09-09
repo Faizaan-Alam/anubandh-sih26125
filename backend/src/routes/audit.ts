@@ -15,9 +15,13 @@ auditRouter.get("/events", requireAuth, requireRoles(["Admin", "Auditor", "Manag
       orderBy: { timestamp: "asc" },
       take: 2000
     });
-    const items = tokenId
+    const filtered = tokenId
       ? rows.filter((row) => String((row.payload as { tokenId?: string }).tokenId ?? "") === tokenId)
       : rows.slice(0, 500);
+    const items = filtered.map((row) => ({
+      ...row,
+      blockNumber: row.blockNumber.toString()
+    }));
     res.json({ items, source: "indexed ChainEvent rows (append-only)" });
   } catch (err) {
     next(err);

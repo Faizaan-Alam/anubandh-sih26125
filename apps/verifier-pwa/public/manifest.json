@@ -1,0 +1,17 @@
+{
+  "name": "ANUBANDH Verifier",
+  "short_name": "ANUBANDH",
+  "description": "Offline-capable asset verifier with risk-tiered authorization",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f4f6f8",
+  "theme_color": "#1b2a4a",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

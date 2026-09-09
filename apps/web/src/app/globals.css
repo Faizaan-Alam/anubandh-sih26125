@@ -1,0 +1,29 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body {
+  min-height: 100%;
+  background: #f4f6f8;
+  color: #122033;
+}
+
+body {
+  font-family: "Source Sans 3", "Segoe UI", sans-serif;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #1f4e79;
+  outline-offset: 2px;
+}

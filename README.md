@@ -41,6 +41,10 @@ Demo Anvil keys are public Foundry test keys. They are labeled as demo/seed data
 | Verifier | Next.js PWA, Service Worker, IndexedDB |
 | Tests | Foundry, Vitest, Playwright |
 
+## Read this first
+
+If you want a plain-language tour of identities, roles, assets, attestations, quarantine, offline mode, and how to click through the demo, open **`UNDERSTANDING.md`**.
+
 ## Repository layout
 
 See `ARCHITECTURE.md` for the three data-flow chains and file-level mapping.

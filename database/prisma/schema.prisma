@@ -1,0 +1,167 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// Append-only indexed chain events. Point-in-time reconstruction reads this table
+/// filtered by timestamp, never the latest derived row alone.
+model ChainEvent {
+  id           String   @id @default(cuid())
+  contractName String
+  eventName    String
+  blockNumber  BigInt
+  blockHash    String
+  txHash       String
+  logIndex     Int
+  timestamp    DateTime
+  payload      Json
+  createdAt    DateTime @default(now())
+
+  @@unique([txHash, logIndex])
+  @@index([eventName, timestamp])
+  @@index([timestamp])
+  @@index([contractName, eventName])
+}
+
+model DidRecord {
+  did          String    @id
+  controller   String
+  status       String
+  registeredAt DateTime
+  revokedAt    DateTime?
+  updatedAt    DateTime  @updatedAt
+
+  @@index([controller])
+}
+
+model RoleGrant {
+  id        String    @id @default(cuid())
+  account   String
+  role      String
+  grantedBy String
+  grantedAt DateTime
+  expiresAt DateTime?
+  revokedAt DateTime?
+  revokedBy String?
+  active    Boolean   @default(true)
+
+  @@index([account, role])
+  @@index([grantedAt])
+}
+
+model Asset {
+  tokenId            String    @id
+  assetIdentifier    String    @unique
+  owner              String
+  custodian          String
+  metadataHash       String
+  freshnessTimestamp DateTime?
+  freshnessWindow    Int
+  assetClass         Int
+  quarantined        Boolean   @default(false)
+  highValue          Boolean   @default(false)
+  mintedAt           DateTime
+  updatedAt          DateTime  @updatedAt
+
+  @@index([owner])
+  @@index([custodian])
+  @@index([quarantined])
+}
+
+model Attestation {
+  id              String   @id
+  tokenId         String
+  observer        String
+  evidenceTier    Int
+  custodian       String
+  locationId      String
+  condition       Int
+  nonce           String   @unique
+  observationHash String
+  timestamp       DateTime
+
+  @@index([tokenId, timestamp])
+}
+
+model Divergence {
+  id                String    @id
+  tokenId           String
+  attestationA      String
+  attestationB      String
+  detectedAt        DateTime
+  resolved          Boolean   @default(false)
+  resolvedAt        DateTime?
+  proposer          String?
+  confirmer         String?
+  evidenceHash      String?
+  acceptedCustodian String?
+  acceptedLocation  String?
+  acceptedCondition Int?
+
+  @@index([tokenId])
+  @@index([resolved])
+}
+
+model LoginNonce {
+  nonce     String   @id
+  address   String
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([address, used])
+}
+
+model Credential {
+  id          String    @id
+  subjectDid  String
+  issuerDid   String
+  role        String
+  issuedAt    DateTime
+  expiresAt   DateTime
+  revoked     Boolean   @default(false)
+  revokedAt   DateTime?
+  document    Json
+  signature   String
+
+  @@index([subjectDid])
+}
+
+model OfflineDecision {
+  id                 String    @id @default(cuid())
+  actorDid           String
+  actorAddress       String
+  operation          String
+  riskTier           String
+  snapshotAgeSeconds Int
+  allowed            Boolean
+  reason             String
+  payload            Json
+  nonce              String    @unique
+  signature          String
+  signedAt           DateTime
+  reconciled         Boolean   @default(false)
+  reconcileAccepted  Boolean?
+  reconcileReason    String?
+  reconciledAt       DateTime?
+  createdAt          DateTime  @default(now())
+
+  @@index([actorDid])
+}
+
+model IndexerCursor {
+  id          String @id @default("default")
+  lastBlock   BigInt
+  updatedAt   DateTime @updatedAt
+}
+
+model StoredDocument {
+  id          String   @id
+  hash        String
+  contentType String
+  createdAt   DateTime @default(now())
+}

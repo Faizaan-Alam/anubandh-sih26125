@@ -82,7 +82,7 @@ You should see `{"ok":true,"service":"anubandh-pep"}`.
    |---|---|
    | Framework Preset | Next.js |
    | Root Directory | `apps/web` (click Edit) |
-   | Install Command | `cd ../.. && npm install` |
+   | Install Command | `cd .. && npm install` |
    | Build Command | `npm run build` |
    | Output | leave default (Next.js) |
 

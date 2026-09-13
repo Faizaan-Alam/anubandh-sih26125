@@ -131,7 +131,7 @@ Repeat the same import of the **same GitHub repo**, but:
 |---|---|
 | Project name | `anubandh-verifier` (or similar) |
 | Root Directory | `apps/verifier-pwa` |
-| Install Command | `cd ../.. && npm install` |
+| Install Command | `cd .. && npm install` |
 | Build Command | `npm run build` |
 
 Env:

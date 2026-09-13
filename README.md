@@ -41,6 +41,10 @@ Demo Anvil keys are public Foundry test keys. They are labeled as demo/seed data
 | Verifier | Next.js PWA, Service Worker, IndexedDB |
 | Tests | Foundry, Vitest, Playwright |
 
+## Deploy on Vercel
+
+The portal and verifier can live on Vercel. The API, indexer, Postgres, and chain cannot. Step-by-step: **`DEPLOY.md`**.
+
 ## Read this first
 
 If you want a plain-language tour of identities, roles, assets, attestations, quarantine, offline mode, and how to click through the demo, open **`UNDERSTANDING.md`**.

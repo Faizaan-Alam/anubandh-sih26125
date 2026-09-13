@@ -7,6 +7,12 @@ import { DEMO_ACCOUNTS } from "@/lib/accounts";
 import { loadToken } from "@/lib/session";
 import { StatusBadge } from "@/components/StatusBadge";
 import { Term } from "@/components/Term";
+import { PageHeader } from "@/components/PageHeader";
+import { HelpPanel } from "@/components/HelpPanel";
+import { ConfidenceMeter } from "@/components/ConfidenceMeter";
+import { AddressChip } from "@/components/AddressChip";
+import { Alert } from "@/components/Alert";
+import { txShort } from "@/lib/format";
 
 interface AssetRow {
   tokenId: string;
@@ -50,7 +56,7 @@ export default function AssetsPage() {
           freshnessWindowSeconds: 7 * 24 * 3600
         })
       }, token);
-      setMsg(`Minted on-chain. tx ${r.txHash}`);
+      setMsg(`Minted on-chain. tx ${txShort(r.txHash)} (${r.txHash})`);
       await refresh();
     } catch (e) {
       setErr(e instanceof Error ? e.message : "mint failed");
@@ -59,28 +65,50 @@ export default function AssetsPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold">
-        <Term label="Asset" hint="ERC-721 token with owner, custodian, freshness and quarantine state." /> registry
-      </h1>
-      <div className="bg-white border border-line p-4 space-y-3 max-w-3xl">
-        <div className="text-sm font-semibold">Mint (Admin only, real chain transaction)</div>
-        <input className="w-full border border-line px-3 py-2" value={identifier} onChange={(e) => setIdentifier(e.target.value)} />
-        <select className="w-full border border-line px-3 py-2" value={to} onChange={(e) => setTo(e.target.value)}>
-          {DEMO_ACCOUNTS.map((a) => (
-            <option key={a.address} value={a.address}>
-              {a.label} {a.address}
-            </option>
-          ))}
-        </select>
-        <label className="text-sm flex items-center gap-2">
-          <input type="checkbox" checked={highValue} onChange={(e) => setHighValue(e.target.checked)} />
-          High-value (separation of duties on quarantine release)
-        </label>
-        <button className="bg-accent text-white px-3 py-2 text-sm" onClick={mint}>Mint asset NFT</button>
-        {identifier.startsWith("SEED") && <StatusBadge value="seed" />}
-        {msg && <div className="text-sm text-emerald-800">{msg}</div>}
-        {err && <div className="text-sm text-red-800 bg-red-50 border border-red-200 px-3 py-2">{err}</div>}
+      <PageHeader kicker="Registry" title={<><Term label="Asset" hint="ERC-721 token with owner, custodian, freshness and quarantine state." /> registry</>}>
+        Each row is one on-chain NFT. Owner is legal title. Custodian is who currently holds it. They can differ.
+      </PageHeader>
+
+      <div className="grid lg:grid-cols-3 gap-4">
+        <div className="lg:col-span-2 bg-white border border-line p-4 space-y-3">
+          <div className="text-sm font-semibold">Mint (Admin only, real chain transaction)</div>
+          <p className="text-xs text-slate-600">
+            If you are not Admin, this button still sends the request. The PEP and the contract will reject it.
+          </p>
+          <label className="text-xs font-semibold text-slate-600">Human-readable serial (hashed on-chain)</label>
+          <input
+            data-testid="asset-identifier"
+            className="field"
+            value={identifier}
+            onChange={(e) => setIdentifier(e.target.value)}
+          />
+          <label className="text-xs font-semibold text-slate-600">Initial owner</label>
+          <select className="field" value={to} onChange={(e) => setTo(e.target.value)}>
+            {DEMO_ACCOUNTS.map((a) => (
+              <option key={a.address} value={a.address}>
+                {a.label} {a.address}
+              </option>
+            ))}
+          </select>
+          <label className="text-sm flex items-center gap-2">
+            <input type="checkbox" checked={highValue} onChange={(e) => setHighValue(e.target.checked)} />
+            High-value (separation of duties on quarantine release)
+          </label>
+          <button className="btn btn-primary" onClick={mint}>Mint asset NFT</button>
+          {identifier.startsWith("SEED") && <StatusBadge value="seed" />}
+          {msg && <Alert kind="ok">{msg}</Alert>}
+          {err && <Alert kind="err">{err}</Alert>}
+        </div>
+        <HelpPanel
+          title="How minting works"
+          steps={[
+            "Only Admin may mint. That check is on-chain.",
+            "The serial is hashed. The raw label is not stored on the chain.",
+            "Open a token row to see confidence, custody, and transfer controls."
+          ]}
+        />
       </div>
+
       <div className="bg-white border border-line overflow-auto">
         <table className="w-full text-sm">
           <thead className="bg-paper text-left">
@@ -94,16 +122,19 @@ export default function AssetsPage() {
           </thead>
           <tbody>
             {items.map((a) => (
-              <tr key={a.tokenId} className="border-t border-line">
-                <td className="px-4 py-2">
+              <tr key={a.tokenId} className="border-t border-line table-row">
+                <td className="px-4 py-3">
                   <Link className="text-accent font-semibold" href={`/assets/${a.tokenId}`}>#{a.tokenId}</Link>
                 </td>
-                <td className="px-4 py-2 font-mono text-xs">{a.assetIdentifier.slice(0, 18)}...</td>
-                <td className="px-4 py-2 font-mono text-xs">
-                  {a.owner.slice(0, 8)}... / {a.custodian.slice(0, 8)}...
+                <td className="px-4 py-3 font-mono text-xs">{a.assetIdentifier.slice(0, 18)}...</td>
+                <td className="px-4 py-3 space-y-1">
+                  <div><AddressChip address={a.owner} /></div>
+                  <div><AddressChip address={a.custodian} /></div>
                 </td>
-                <td className="px-4 py-2">{a.confidence.score}</td>
-                <td className="px-4 py-2 space-x-1">
+                <td className="px-4 py-3 w-52">
+                  <ConfidenceMeter score={a.confidence.score} />
+                </td>
+                <td className="px-4 py-3 space-x-1">
                   <StatusBadge value={a.quarantined ? "Quarantined" : "Clear"} />
                   {a.highValue && <StatusBadge value="high" />}
                 </td>

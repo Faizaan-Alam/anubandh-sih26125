@@ -7,6 +7,11 @@ import { CHAIN_ID, DEMO_ACCOUNTS } from "@/lib/accounts";
 import { loadStoredKey, loadToken, walletFromKey } from "@/lib/session";
 import { StatusBadge } from "@/components/StatusBadge";
 import { Term } from "@/components/Term";
+import { PageHeader } from "@/components/PageHeader";
+import { HelpPanel } from "@/components/HelpPanel";
+import { Alert } from "@/components/Alert";
+import { AddressChip } from "@/components/AddressChip";
+import { txShort } from "@/lib/format";
 
 export default function IdentityPage() {
   const [did, setDid] = useState("");
@@ -43,7 +48,7 @@ export default function IdentityPage() {
         method: "POST",
         body: JSON.stringify({ did: formatDid(CHAIN_ID, w.address), controller: w.address })
       }, token);
-      setMsg(`DID registered on-chain. tx ${r.txHash}`);
+      setMsg(`DID registered on-chain. tx ${txShort(r.txHash)}`);
       await lookup();
     } catch (e) {
       setErr(e instanceof Error ? e.message : "register failed");
@@ -57,7 +62,7 @@ export default function IdentityPage() {
         method: "POST",
         body: JSON.stringify({ did })
       }, token);
-      setMsg(`DID revoked. tx ${r.txHash}`);
+      setMsg(`DID revoked. tx ${txShort(r.txHash)}`);
       await lookup();
     } catch (e) {
       setErr(e instanceof Error ? e.message : "revoke failed");
@@ -65,33 +70,58 @@ export default function IdentityPage() {
   }
 
   return (
-    <div className="space-y-4 max-w-3xl">
-      <h1 className="text-2xl font-bold">
-        <Term label="DID" hint="Decentralized identifier of the form did:ethr:chainId:address." /> registry
-      </h1>
-      <p className="text-sm text-slate-600">
+    <div className="space-y-4 max-w-5xl">
+      <PageHeader
+        kicker="People"
+        title={<><Term label="DID" hint="Decentralized identifier of the form did:ethr:chainId:address." /> registry</>}
+      >
         Registration, rotation and revocation are on-chain. Login is rejected if the recovered signer is not the
         current controller of an active DID.
-      </p>
-      <div className="bg-white border border-line p-4 space-y-3">
-        <input className="w-full border border-line px-3 py-2 font-mono text-sm" value={did} onChange={(e) => setDid(e.target.value)} />
-        <div className="flex gap-2">
-          <button className="bg-accent text-white px-3 py-2 text-sm" onClick={lookup}>Lookup</button>
-          <button className="border border-line px-3 py-2 text-sm" onClick={register}>Register my DID</button>
-          <button className="border border-red-300 text-red-800 px-3 py-2 text-sm" onClick={revoke}>Revoke (Admin)</button>
+      </PageHeader>
+
+      <div className="grid lg:grid-cols-3 gap-4">
+        <div className="lg:col-span-2 bg-white border border-line p-4 space-y-3">
+          <label className="text-xs font-semibold text-slate-600">DID to inspect</label>
+          <input className="field font-mono text-sm" value={did} onChange={(e) => setDid(e.target.value)} />
+          <div className="flex flex-wrap gap-2">
+            <button className="btn btn-primary" onClick={lookup}>Lookup</button>
+            <button className="btn btn-secondary" onClick={register}>Register my DID</button>
+            <button className="btn btn-danger" onClick={revoke}>Revoke (Admin)</button>
+          </div>
+          {msg && <Alert kind="ok">{msg}</Alert>}
+          {err && <Alert kind="err">{err}</Alert>}
+          {record && (
+            <dl className="grid grid-cols-2 gap-2 text-sm border border-line bg-paper p-3 fade-in">
+              <dt className="text-slate-500">Status</dt>
+              <dd><StatusBadge value={String(record.status)} /></dd>
+              <dt className="text-slate-500">Controller</dt>
+              <dd><AddressChip address={String(record.controller)} /></dd>
+              <dt className="text-slate-500">Registered at</dt>
+              <dd className="font-mono text-xs">{String(record.registeredAt)}</dd>
+              <dt className="text-slate-500">Revoked at</dt>
+              <dd className="font-mono text-xs">{String(record.revokedAt || 0)}</dd>
+            </dl>
+          )}
         </div>
-        {msg && <div className="text-sm text-emerald-800">{msg}</div>}
-        {err && <div className="text-sm text-red-800">{err}</div>}
-        {record && (
-          <pre className="bg-paper border border-line p-3 text-xs overflow-auto">{JSON.stringify(record, null, 2)}</pre>
-        )}
+        <HelpPanel
+          title="Why DIDs matter"
+          steps={[
+            "A DID names a person without a password database.",
+            "The controller key can rotate. The DID string stays the same.",
+            "Revoked DIDs cannot log in or attest."
+          ]}
+        />
       </div>
-      <div className="text-sm">
-        <StatusBadge value="seed" /> Demo identities correspond to Anvil accounts:
-        <ul className="mt-2 font-mono text-xs space-y-1">
+
+      <div className="bg-white border border-line p-4">
+        <div className="flex items-center gap-2 text-sm font-semibold">
+          <StatusBadge value="seed" /> Demo identities (Anvil accounts)
+        </div>
+        <ul className="mt-3 divide-y divide-line">
           {DEMO_ACCOUNTS.map((a) => (
-            <li key={a.address}>
-              {a.label}: {formatDid(CHAIN_ID, a.address)}
+            <li key={a.address} className="py-2 flex flex-wrap items-center justify-between gap-2 text-sm">
+              <span className="font-semibold">{a.label}</span>
+              <span className="font-mono text-xs text-slate-600">{formatDid(CHAIN_ID, a.address)}</span>
             </li>
           ))}
         </ul>

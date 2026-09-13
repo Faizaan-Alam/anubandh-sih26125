@@ -7,7 +7,7 @@ test("offline PWA allows low-risk scan and denies stale high-risk transfer", asy
   await expect(page.getByText(/Synced trust anchors/i)).toBeVisible({ timeout: 30_000 });
 
   await context.setOffline(true);
-  await expect(page.getByText("Offline")).toBeVisible();
+  await expect(page.getByTestId("online-status")).toHaveText("Offline");
 
   await page.getByTestId("low-risk").click();
   await expect(page.getByTestId("activity-log")).toContainText(/ALLOWED identifier_scan/i);

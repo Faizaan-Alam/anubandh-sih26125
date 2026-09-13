@@ -27,3 +27,174 @@ textarea:focus-visible {
   outline: 2px solid #1f4e79;
   outline-offset: 2px;
 }
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes meter-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.fade-in {
+  animation: fade-in 220ms ease-out;
+}
+
+.fade-in-up {
+  animation: fade-in-up 280ms ease-out both;
+}
+
+.meter-fill {
+  transform-origin: left center;
+  animation: meter-fill 450ms ease-out;
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #15803d;
+  animation: pulse-dot 1.6s ease-in-out infinite;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  transition: background-color 120ms ease, border-color 120ms ease, transform 120ms ease;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: #1f4e79;
+  color: #fff;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #183d5e;
+}
+
+.btn-secondary {
+  background: #fff;
+  color: #122033;
+  border-color: #d0d7de;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #f4f6f8;
+}
+
+.btn-danger {
+  background: #fff;
+  color: #9f1239;
+  border-color: #fecdd3;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: #fff1f2;
+}
+
+.btn-navy {
+  background: #1b2a4a;
+  color: #fff;
+}
+
+.field {
+  width: 100%;
+  border: 1px solid #d0d7de;
+  background: #fff;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+.field:focus {
+  border-color: #1f4e79;
+}
+
+.nav-link {
+  display: block;
+  padding: 0.55rem 1.25rem;
+  font-size: 0.875rem;
+  color: #e2e8f0;
+  border-left: 3px solid transparent;
+  transition: background-color 120ms ease, border-color 120ms ease;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.nav-link-active {
+  background: rgba(255, 255, 255, 0.1);
+  font-weight: 600;
+  color: #fff;
+  border-left-color: #93c5fd;
+}
+
+.table-row {
+  transition: background-color 120ms ease;
+}
+
+.table-row:hover {
+  background: #f8fafc;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-in,
+  .fade-in-up,
+  .meter-fill,
+  .live-dot,
+  .btn {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}

@@ -5,16 +5,17 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { clearSession, loadToken } from "@/lib/session";
+import { shortAddr } from "@/lib/format";
 import { StatusBadge } from "./StatusBadge";
 
 const NAV = [
-  { href: "/dashboard", label: "Dashboard" },
-  { href: "/identity", label: "Identity" },
-  { href: "/roles", label: "Roles" },
-  { href: "/assets", label: "Assets" },
-  { href: "/attestations", label: "Attestations" },
-  { href: "/divergence", label: "Divergence" },
-  { href: "/audit", label: "Audit Trail" }
+  { href: "/dashboard", label: "Dashboard", hint: "Live overview" },
+  { href: "/identity", label: "Identity", hint: "DIDs and keys" },
+  { href: "/roles", label: "Roles", hint: "Who may act" },
+  { href: "/assets", label: "Assets", hint: "NFT registry" },
+  { href: "/attestations", label: "Attestations", hint: "Signed observations" },
+  { href: "/divergence", label: "Divergence", hint: "Conflicts and freeze" },
+  { href: "/audit", label: "Audit Trail", hint: "History replay" }
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
@@ -39,7 +40,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   }, [router, pathname]);
 
   if (!me) {
-    return <div className="p-8 text-slate-600">Checking session against RoleManager...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center text-slate-600">
+        <div className="text-center fade-in">
+          <div className="live-dot mx-auto mb-3" />
+          <div>Checking session against RoleManager...</div>
+          <div className="text-xs text-slate-500 mt-1">The UI is not the security boundary.</div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -48,26 +57,35 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <div className="px-5 py-5 border-b border-white/10">
           <div className="text-lg font-bold tracking-wide">ANUBANDH</div>
           <div className="text-xs text-slate-300 mt-1">SIH26125 / BEL</div>
+          <div className="text-[11px] text-slate-400 mt-2 leading-snug">
+            Identity, assets, access control, audit
+          </div>
         </div>
         <nav className="flex-1 py-3">
-          {NAV.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`block px-5 py-2 text-sm ${
-                pathname === item.href || pathname.startsWith(item.href + "/")
-                  ? "bg-white/10 font-semibold"
-                  : "text-slate-200 hover:bg-white/5"
-              }`}
-            >
-              {item.label}
-            </Link>
-          ))}
+          {NAV.map((item) => {
+            const active = pathname === item.href || pathname.startsWith(item.href + "/");
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`nav-link ${active ? "nav-link-active" : ""}`}
+              >
+                <span className="block">{item.label}</span>
+                <span className="block text-[11px] text-slate-400 font-normal">{item.hint}</span>
+              </Link>
+            );
+          })}
         </nav>
-        <div className="px-5 py-4 border-t border-white/10 text-xs space-y-1">
-          <div className="text-slate-300">Current role (on-chain)</div>
+        <div className="px-5 py-4 border-t border-white/10 text-xs space-y-2">
+          <div className="flex items-center gap-2 text-slate-300">
+            <span className="live-dot" />
+            Current role (on-chain)
+          </div>
           <StatusBadge value={me.role} />
-          <div className="break-all text-slate-400 mt-2">{me.did}</div>
+          <div className="break-all text-slate-400" title={me.did}>
+            {me.did}
+          </div>
+          <div className="text-slate-500">{shortAddr(me.address, 8, 6)}</div>
         </div>
       </aside>
       <div className="flex-1 min-w-0">
@@ -79,7 +97,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <div className="flex items-center gap-3">
             <StatusBadge value="demo" />
             <button
-              className="text-sm border border-line px-3 py-1 bg-paper hover:bg-slate-100"
+              className="btn btn-secondary"
               onClick={() => {
                 clearSession();
                 router.replace("/");
@@ -90,7 +108,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </div>
         </header>
         {error && <div className="bg-red-50 text-red-900 px-6 py-2 text-sm">{error}</div>}
-        <main className="p-6">{children}</main>
+        <main className="p-6 fade-in">{children}</main>
       </div>
     </div>
   );

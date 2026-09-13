@@ -13,6 +13,9 @@ module.exports = {
       fontFamily: {
         sans: ['"Source Sans 3"', "Segoe UI", "sans-serif"],
         mono: ['"IBM Plex Mono"', "ui-monospace", "monospace"]
+      },
+      transitionDuration: {
+        120: "120ms"
       }
     }
   },

@@ -14,7 +14,7 @@ test("Admin can open mint form and Assets page", async ({ page }) => {
   await page.getByRole("link", { name: "Assets" }).click();
   await expect(page.getByText("Mint (Admin only, real chain transaction)")).toBeVisible();
   const ident = `SEED-E2E-${Date.now()}`;
-  await page.locator("input").first().fill(ident);
+  await page.getByTestId("asset-identifier").fill(ident);
   await page.getByRole("button", { name: "Mint asset NFT" }).click();
   await expect(page.getByText(/Minted on-chain|tx 0x/i)).toBeVisible({ timeout: 30_000 });
 });

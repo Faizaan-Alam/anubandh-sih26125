@@ -183,6 +183,8 @@ export default function VerifierHome() {
     setQueue((await queueAll()) as unknown as Queued[]);
   }
 
+  const age = snapshot ? Math.max(0, Math.floor(Date.now() / 1000) - snapshot.capturedAt) : null;
+
   return (
     <div className="min-h-screen">
       <header className="bg-navy text-white px-4 py-3 flex justify-between items-center">
@@ -190,32 +192,53 @@ export default function VerifierHome() {
           <div className="font-bold">ANUBANDH Verifier</div>
           <div className="text-xs text-slate-300">Installable PWA · SW {sw}</div>
         </div>
-        <span className={`text-xs px-2 py-1 ${online ? "bg-emerald-700" : "bg-red-800"}`}>
+        <span
+          data-testid="online-status"
+          className={`text-xs px-2 py-1 ${online ? "bg-emerald-700" : "bg-red-800"}`}
+        >
           {online ? "Online" : "Offline"}
         </span>
       </header>
       <main className="p-4 space-y-4 max-w-3xl mx-auto">
+        <div className="bg-white border border-line p-4 text-sm fade-in-up">
+          <div className="font-semibold">How this screen works</div>
+          <ol className="mt-2 space-y-1 text-slate-700 list-decimal list-inside">
+            <li>While online, cache keys, role, and policy into IndexedDB.</li>
+            <li>Disconnect the network. A low-risk identifier scan is allowed.</li>
+            <li>Age the snapshot, then try a high-risk transfer. It should be denied.</li>
+            <li>Reconnect to submit the signed queue for reconciliation.</li>
+          </ol>
+        </div>
         <div className="bg-amber-50 border border-amber-200 text-sm px-3 py-2">
           Demo signer: {DEMO.label} {DEMO.address.slice(0, 10)}... (Anvil public key)
         </div>
-        <div className="bg-white border border-line p-4 space-y-2 text-sm">
-          <div>Cached snapshot age: {snapshot ? `${Math.max(0, Math.floor(Date.now() / 1000) - snapshot.capturedAt)}s` : "none"}</div>
+        <div className="bg-white border border-line p-4 space-y-2 text-sm fade-in-up">
+          <div>Cached snapshot age: {age === null ? "none" : `${age}s`}</div>
           <div>Role: {snapshot?.identity.role ?? "-"}</div>
           <div>High-risk max staleness: {STALENESS_LIMITS_SECONDS.high}s</div>
+          <div className="h-2 bg-slate-200 mt-2">
+            <div
+              className={`h-full ${age !== null && age > STALENESS_LIMITS_SECONDS.high ? "bg-red-800" : "bg-emerald-700"}`}
+              style={{
+                width: `${Math.min(100, ((age ?? 0) / STALENESS_LIMITS_SECONDS.high) * 100)}%`
+              }}
+            />
+          </div>
+          <div className="text-xs text-slate-500">Bar fills as the cache ages toward the 15-minute high-risk limit.</div>
           <div className="flex flex-wrap gap-2 pt-2">
-            <button className="bg-accent text-white px-3 py-2" onClick={() => loginAndSync().catch((e) => push(String(e)))}>
+            <button className="btn bg-accent text-white" onClick={() => loginAndSync().catch((e) => push(String(e)))}>
               Login and cache snapshot
             </button>
-            <button className="border border-line px-3 py-2" data-testid="low-risk" onClick={() => decide("identifier_scan")}>
+            <button className="btn border border-line bg-white" data-testid="low-risk" onClick={() => decide("identifier_scan")}>
               Low-risk: identifier scan
             </button>
-            <button className="border border-line px-3 py-2" onClick={ageSnapshot}>
+            <button className="btn border border-line bg-white" onClick={ageSnapshot}>
               Age snapshot (demo)
             </button>
-            <button className="border border-red-300 text-red-800 px-3 py-2" data-testid="high-risk" onClick={() => decide("transfer_ownership")}>
+            <button className="btn border border-red-300 text-red-800 bg-white" data-testid="high-risk" onClick={() => decide("transfer_ownership")}>
               High-risk: transfer ownership
             </button>
-            <button className="bg-navy text-white px-3 py-2" data-testid="reconcile" onClick={() => reconnect().catch((e) => push(String(e)))}>
+            <button className="btn bg-navy text-white" data-testid="reconcile" onClick={() => reconnect().catch((e) => push(String(e)))}>
               Reconnect and reconcile
             </button>
           </div>

@@ -49,6 +49,8 @@ The portal and verifier can live on Vercel. The API, indexer, Postgres, and chai
 
 If you want a plain-language tour of identities, roles, assets, attestations, quarantine, offline mode, and how to click through the demo, open **`UNDERSTANDING.md`**.
 
+If you want the engineering timeline, tech stack, and workflows (how it was built, in what order), open **`ENGINEER.md`**.
+
 ## Repository layout
 
 See `ARCHITECTURE.md` for the three data-flow chains and file-level mapping.

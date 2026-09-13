@@ -9,12 +9,12 @@ module.exports = {
   plugins: [require("daisyui")],
   daisyui: {
     themes: [
+      "forest",
       "corporate",
       "business",
       "nord",
       "winter",
       "emerald",
-      "forest",
       "aqua",
       "pastel",
       "dim",

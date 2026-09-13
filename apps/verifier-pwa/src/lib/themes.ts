@@ -1,10 +1,10 @@
 export const THEMES = [
+  { id: "forest", label: "Forest" },
   { id: "corporate", label: "Corporate" },
   { id: "business", label: "Business" },
   { id: "nord", label: "Nord" },
   { id: "winter", label: "Winter" },
   { id: "emerald", label: "Emerald" },
-  { id: "forest", label: "Forest" },
   { id: "aqua", label: "Aqua" },
   { id: "pastel", label: "Pastel" },
   { id: "dim", label: "Dim" },
@@ -13,8 +13,8 @@ export const THEMES = [
   { id: "synthwave", label: "Synthwave" }
 ] as const;
 
-export const DEFAULT_THEME = "corporate";
-export const THEME_STORAGE_KEY = "anubandh.theme";
+export const DEFAULT_THEME = "forest";
+export const THEME_STORAGE_KEY = "anubandh.theme.v2";
 
 export function applyTheme(theme: string): void {
   if (typeof document === "undefined") return;

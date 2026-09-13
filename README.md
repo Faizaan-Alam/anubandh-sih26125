@@ -7,6 +7,8 @@ A decentralized blockchain platform for identity, access control and digital ass
 - **Domain:** Software / Blockchain and Cybersecurity
 - **Developer:** Faizaan Alam, B.Tech CSE (AI and ML)
 
+**Live portal:** [https://anubandh-web.vercel.app/](https://anubandh-web.vercel.app/) (Forest theme by default). The hosted UI talks to a public frontend only. Login and chain writes still need a running PEP and RPC. Local full stack: http://localhost:3000
+
 ANUBANDH is a software-first, permissioned EVM platform. It unifies decentralized identity (DID), NFT-based asset management, smart-contract-enforced RBAC, signed attestations, divergence/quarantine, risk-aware offline verification, and an immutable audit trail.
 
 This prototype does **not** depend on ESP32, PUFs, or any specialized hardware. QR/NFC-style identifiers are treated as the weaker `IdentifierScan` evidence tier. They are never described as unclonable or tamper-proof.
@@ -43,7 +45,7 @@ Demo Anvil keys are public Foundry test keys. They are labeled as demo/seed data
 
 ## Deploy on Vercel
 
-The portal and verifier can live on Vercel. The API, indexer, Postgres, and chain cannot. Step-by-step: **`learn-these/DEPLOY.md`**.
+Portal is live at **https://anubandh-web.vercel.app/**. The API, indexer, Postgres, and chain are not on Vercel. Step-by-step: **`learn-these/DEPLOY.md`**.
 
 ## Learn these
 

@@ -9,6 +9,7 @@ If you want a non-engineer tour, read `UNDERSTANDING.md` first. This file is the
 - Run locally: `../README.md`
 - Click-through demo: `DEMO.md`
 - Vercel: `DEPLOY.md`
+- Live portal: https://anubandh-web.vercel.app/ (Forest is the default DaisyUI theme)
 
 ---
 

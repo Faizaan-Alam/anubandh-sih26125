@@ -1,5 +1,7 @@
 # Deploy ANUBANDH on Vercel
 
+**Live portal:** https://anubandh-web.vercel.app/
+
 Vercel hosts **Next.js frontends**. It does not run Anvil, Foundry, a long-lived Express process, or the event indexer.
 
 You can put these on Vercel:
@@ -81,7 +83,7 @@ You should see `{"ok":true,"service":"anubandh-pep"}`.
    | Setting | Value |
    |---|---|
    | Framework Preset | Next.js |
-   | Root Directory | `apps/web` (click Edit) |
+   | Root Directory | `apps/web` (click Edit). Turn on **Include source files outside of the Root Directory in the Build Step**. Without that, `cd ..` is blocked and `npm install` fails. |
    | Install Command | `cd .. && npm install` |
    | Build Command | `npm run build` |
    | Output | leave default (Next.js) |

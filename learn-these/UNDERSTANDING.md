@@ -206,6 +206,8 @@ tests/e2e                Playwright (including real browser offline)
 
 ## 10. How to run it
 
+Public UI (Forest theme): https://anubandh-web.vercel.app/
+
 If the stack is already up on this machine, just open:
 
 - Portal: http://localhost:3000

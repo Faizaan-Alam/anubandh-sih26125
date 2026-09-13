@@ -14,4 +14,6 @@ All ANUBANDH learning and design documents live in this folder. Start at the top
 | 8 | [SCHEMA.md](SCHEMA.md) | PostgreSQL tables used as an off-chain index |
 | 9 | [Anubandh_New_Synopsis_No_ESP32.docx](Anubandh_New_Synopsis_No_ESP32.docx) | Authoritative SIH synopsis (software-first, no ESP32) |
 
+**Live portal:** https://anubandh-web.vercel.app/
+
 The repo root `README.md` is the short setup sheet. Come here when you want to **understand** the system.

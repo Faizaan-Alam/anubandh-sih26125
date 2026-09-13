@@ -10,10 +10,14 @@ export function Alert({
   children: ReactNode;
 }) {
   const cls = {
-    ok: "bg-emerald-50 border-emerald-200 text-emerald-950",
-    err: "bg-red-50 border-red-200 text-red-950",
-    info: "bg-slate-50 border-line text-slate-800",
-    warn: "bg-amber-50 border-amber-200 text-amber-950"
+    ok: "alert-success",
+    err: "alert-error",
+    info: "alert-info",
+    warn: "alert-warning"
   }[kind];
-  return <div className={`border px-3 py-2 text-sm fade-in ${cls}`}>{children}</div>;
+  return (
+    <div role="alert" className={`alert ${cls} text-sm fade-in`}>
+      <span>{children}</span>
+    </div>
+  );
 }

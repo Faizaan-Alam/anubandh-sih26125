@@ -12,10 +12,10 @@ export function PageHeader({
   children?: ReactNode;
 }) {
   return (
-    <div className="fade-in">
-      {kicker && <div className="text-xs font-semibold uppercase tracking-wide text-accent mb-1">{kicker}</div>}
-      <h1 className="text-2xl font-bold text-ink">{title}</h1>
-      {children && <div className="text-sm text-slate-600 mt-1 max-w-3xl leading-relaxed">{children}</div>}
+    <div className="fade-in-up">
+      {kicker && <div className="text-xs font-bold uppercase tracking-wider text-primary mb-1">{kicker}</div>}
+      <h1 className="text-3xl font-bold">{title}</h1>
+      {children && <div className="text-sm opacity-80 mt-2 max-w-3xl leading-relaxed">{children}</div>}
     </div>
   );
 }

@@ -94,34 +94,34 @@ export default function AttestationsPage() {
       </PageHeader>
 
       <div className="grid lg:grid-cols-3 gap-4">
-        <div className="lg:col-span-2 bg-white border border-line p-4 grid sm:grid-cols-2 gap-3">
-          <label className="text-xs font-semibold text-slate-600 sm:col-span-2">
+        <div className="lg:col-span-2 card bg-base-100 shadow-md p-4 grid sm:grid-cols-2 gap-3">
+          <label className="text-xs font-semibold opacity-80 sm:col-span-2">
             Token id
-            <input className="field mt-1" value={tokenId} onChange={(e) => setTokenId(e.target.value)} />
+            <input className="input input-bordered w-full mt-1" value={tokenId} onChange={(e) => setTokenId(e.target.value)} />
           </label>
-          <label className="text-xs font-semibold text-slate-600">
+          <label className="text-xs font-semibold opacity-80">
             Evidence tier
-            <select className="field mt-1" value={tier} onChange={(e) => setTier(e.target.value as typeof tier)}>
+            <select className="select select-bordered w-full mt-1" value={tier} onChange={(e) => setTier(e.target.value as typeof tier)}>
               <option>SignedInspection</option>
               <option>IdentifierScan</option>
             </select>
           </label>
-          <label className="text-xs font-semibold text-slate-600">
+          <label className="text-xs font-semibold opacity-80">
             Observed condition
-            <select className="field mt-1" value={condition} onChange={(e) => setCondition(e.target.value as typeof condition)}>
+            <select className="select select-bordered w-full mt-1" value={condition} onChange={(e) => setCondition(e.target.value as typeof condition)}>
               <option>Good</option>
               <option>Damaged</option>
               <option>Missing</option>
               <option>Unknown</option>
             </select>
           </label>
-          <label className="text-xs font-semibold text-slate-600">
+          <label className="text-xs font-semibold opacity-80">
             Location label (hashed on-chain)
-            <input className="field mt-1" value={location} onChange={(e) => setLocation(e.target.value)} />
+            <input className="input input-bordered w-full mt-1" value={location} onChange={(e) => setLocation(e.target.value)} />
           </label>
-          <label className="text-xs font-semibold text-slate-600">
+          <label className="text-xs font-semibold opacity-80">
             Observed custodian
-            <select className="field mt-1" value={custodian} onChange={(e) => setCustodian(e.target.value)}>
+            <select className="select select-bordered w-full mt-1" value={custodian} onChange={(e) => setCustodian(e.target.value)}>
               {DEMO_ACCOUNTS.map((a) => (
                 <option key={a.address} value={a.address}>{a.label}</option>
               ))}
@@ -129,7 +129,7 @@ export default function AttestationsPage() {
           </label>
           <div className="sm:col-span-2 flex gap-2">
             <button className="btn btn-primary" onClick={submit}>Sign and submit</button>
-            <button className="btn btn-secondary" onClick={load}>Refresh history</button>
+            <button className="btn btn-outline" onClick={load}>Refresh history</button>
           </div>
         </div>
         <HelpPanel
@@ -150,15 +150,15 @@ export default function AttestationsPage() {
       {msg && <Alert kind="ok">{msg}</Alert>}
       {err && <Alert kind="err">{err}</Alert>}
 
-      <div className="bg-white border border-line overflow-auto">
-        <div className="px-4 py-2 border-b border-line text-sm font-semibold flex items-center gap-2">
+      <div className="card bg-base-100 shadow-md overflow-auto">
+        <div className="px-4 py-2 border-b border-base-300 text-sm font-semibold flex items-center gap-2">
           History <StatusBadge value="demo" />
         </div>
         {items.length === 0 ? (
-          <div className="px-4 py-6 text-sm text-slate-500">No attestations loaded. Submit one or click Refresh history.</div>
+          <div className="px-4 py-6 text-sm opacity-60">No attestations loaded. Submit one or click Refresh history.</div>
         ) : (
           <table className="w-full text-sm">
-            <thead className="bg-paper text-left">
+            <thead>
               <tr>
                 <th className="px-4 py-2">Id</th>
                 <th className="px-4 py-2">Observer</th>
@@ -169,7 +169,7 @@ export default function AttestationsPage() {
             </thead>
             <tbody>
               {items.map((row) => (
-                <tr key={row.id} className="border-t border-line table-row">
+                <tr key={row.id} className="border-t border-base-300 hover">
                   <td className="px-4 py-2">{row.id}</td>
                   <td className="px-4 py-2"><AddressChip address={row.observer} /></td>
                   <td className="px-4 py-2">{row.evidenceTier}</td>

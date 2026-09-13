@@ -3,21 +3,29 @@ module.exports = {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
-      colors: {
-        navy: "#1b2a4a",
-        ink: "#122033",
-        paper: "#f4f6f8",
-        line: "#d0d7de",
-        accent: "#1f4e79"
-      },
       fontFamily: {
         sans: ['"Source Sans 3"', "Segoe UI", "sans-serif"],
         mono: ['"IBM Plex Mono"', "ui-monospace", "monospace"]
-      },
-      transitionDuration: {
-        120: "120ms"
       }
     }
   },
-  plugins: []
+  plugins: [require("daisyui")],
+  daisyui: {
+    themes: [
+      "corporate",
+      "business",
+      "nord",
+      "winter",
+      "emerald",
+      "forest",
+      "aqua",
+      "pastel",
+      "dim",
+      "night",
+      "luxury",
+      "synthwave"
+    ],
+    darkTheme: "night",
+    logs: false
+  }
 };

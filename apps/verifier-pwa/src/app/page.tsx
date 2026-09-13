@@ -6,6 +6,7 @@ import { formatDid } from "@anubandh/shared";
 import { buildLoginMessage, signOfflineDecision } from "@anubandh/crypto";
 import { currentPolicySnapshot, evaluateOfflineOperation, STALENESS_LIMITS_SECONDS } from "@anubandh/policy";
 import { idbGet, idbSet, queueAll, queuePut } from "@/lib/idb";
+import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 
 const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
 const CHAIN_ID = Number(process.env.NEXT_PUBLIC_CHAIN_ID ?? 31337);
@@ -186,78 +187,84 @@ export default function VerifierHome() {
   const age = snapshot ? Math.max(0, Math.floor(Date.now() / 1000) - snapshot.capturedAt) : null;
 
   return (
-    <div className="min-h-screen">
-      <header className="bg-navy text-white px-4 py-3 flex justify-between items-center">
-        <div>
-          <div className="font-bold">ANUBANDH Verifier</div>
-          <div className="text-xs text-slate-300">Installable PWA · SW {sw}</div>
+    <div className="min-h-screen bg-base-200">
+      <header className="navbar bg-neutral text-neutral-content shadow-md">
+        <div className="flex-1 px-2">
+          <div className="font-black tracking-wide">ANUBANDH Verifier</div>
+          <div className="text-xs opacity-70">Installable PWA · SW {sw}</div>
         </div>
-        <span
-          data-testid="online-status"
-          className={`text-xs px-2 py-1 ${online ? "bg-emerald-700" : "bg-red-800"}`}
-        >
-          {online ? "Online" : "Offline"}
-        </span>
+        <div className="flex items-center gap-2">
+          <ThemeSwitcher />
+          <span
+            data-testid="online-status"
+            className={`badge ${online ? "badge-success" : "badge-error"}`}
+          >
+            {online ? "Online" : "Offline"}
+          </span>
+        </div>
       </header>
       <main className="p-4 space-y-4 max-w-3xl mx-auto">
-        <div className="bg-white border border-line p-4 text-sm fade-in-up">
-          <div className="font-semibold">How this screen works</div>
-          <ol className="mt-2 space-y-1 text-slate-700 list-decimal list-inside">
-            <li>While online, cache keys, role, and policy into IndexedDB.</li>
-            <li>Disconnect the network. A low-risk identifier scan is allowed.</li>
-            <li>Age the snapshot, then try a high-risk transfer. It should be denied.</li>
-            <li>Reconnect to submit the signed queue for reconciliation.</li>
-          </ol>
+        <div className="card bg-base-100 shadow-md text-sm fade-in-up">
+          <div className="card-body p-4">
+            <h2 className="card-title text-base">How this screen works</h2>
+            <ol className="mt-1 space-y-1 list-decimal list-inside opacity-80">
+              <li>While online, cache keys, role, and policy into IndexedDB.</li>
+              <li>Disconnect the network. A low-risk identifier scan is allowed.</li>
+              <li>Age the snapshot, then try a high-risk transfer. It should be denied.</li>
+              <li>Reconnect to submit the signed queue for reconciliation.</li>
+            </ol>
+          </div>
         </div>
-        <div className="bg-amber-50 border border-amber-200 text-sm px-3 py-2">
-          Demo signer: {DEMO.label} {DEMO.address.slice(0, 10)}... (Anvil public key)
+        <div className="alert alert-warning text-sm">
+          <span>Demo signer: {DEMO.label} {DEMO.address.slice(0, 10)}... (Anvil public key)</span>
         </div>
-        <div className="bg-white border border-line p-4 space-y-2 text-sm fade-in-up">
-          <div>Cached snapshot age: {age === null ? "none" : `${age}s`}</div>
-          <div>Role: {snapshot?.identity.role ?? "-"}</div>
-          <div>High-risk max staleness: {STALENESS_LIMITS_SECONDS.high}s</div>
-          <div className="h-2 bg-slate-200 mt-2">
-            <div
-              className={`h-full ${age !== null && age > STALENESS_LIMITS_SECONDS.high ? "bg-red-800" : "bg-emerald-700"}`}
-              style={{
-                width: `${Math.min(100, ((age ?? 0) / STALENESS_LIMITS_SECONDS.high) * 100)}%`
-              }}
+        <div className="card bg-base-100 shadow-md text-sm fade-in-up">
+          <div className="card-body p-4 space-y-2">
+            <div>Cached snapshot age: {age === null ? "none" : `${age}s`}</div>
+            <div>Role: {snapshot?.identity.role ?? "-"}</div>
+            <div>High-risk max staleness: {STALENESS_LIMITS_SECONDS.high}s</div>
+            <progress
+              className={`progress w-full ${age !== null && age > STALENESS_LIMITS_SECONDS.high ? "progress-error" : "progress-success"}`}
+              value={Math.min(100, ((age ?? 0) / STALENESS_LIMITS_SECONDS.high) * 100)}
+              max={100}
             />
-          </div>
-          <div className="text-xs text-slate-500">Bar fills as the cache ages toward the 15-minute high-risk limit.</div>
-          <div className="flex flex-wrap gap-2 pt-2">
-            <button className="btn bg-accent text-white" onClick={() => loginAndSync().catch((e) => push(String(e)))}>
-              Login and cache snapshot
-            </button>
-            <button className="btn border border-line bg-white" data-testid="low-risk" onClick={() => decide("identifier_scan")}>
-              Low-risk: identifier scan
-            </button>
-            <button className="btn border border-line bg-white" onClick={ageSnapshot}>
-              Age snapshot (demo)
-            </button>
-            <button className="btn border border-red-300 text-red-800 bg-white" data-testid="high-risk" onClick={() => decide("transfer_ownership")}>
-              High-risk: transfer ownership
-            </button>
-            <button className="btn bg-navy text-white" data-testid="reconcile" onClick={() => reconnect().catch((e) => push(String(e)))}>
-              Reconnect and reconcile
-            </button>
+            <div className="text-xs opacity-60">Bar fills as the cache ages toward the 15-minute high-risk limit.</div>
+            <div className="flex flex-wrap gap-2 pt-2">
+              <button className="btn btn-primary btn-sm" onClick={() => loginAndSync().catch((e) => push(String(e)))}>
+                Login and cache snapshot
+              </button>
+              <button className="btn btn-outline btn-sm" data-testid="low-risk" onClick={() => decide("identifier_scan")}>
+                Low-risk: identifier scan
+              </button>
+              <button className="btn btn-outline btn-sm" onClick={ageSnapshot}>
+                Age snapshot (demo)
+              </button>
+              <button className="btn btn-error btn-outline btn-sm" data-testid="high-risk" onClick={() => decide("transfer_ownership")}>
+                High-risk: transfer ownership
+              </button>
+              <button className="btn btn-neutral btn-sm" data-testid="reconcile" onClick={() => reconnect().catch((e) => push(String(e)))}>
+                Reconnect and reconcile
+              </button>
+            </div>
           </div>
         </div>
-        <div className="bg-white border border-line p-4">
-          <div className="font-semibold text-sm mb-2">Signed local decisions (IndexedDB)</div>
-          <ul className="text-xs space-y-2" data-testid="decision-log">
-            {queue.map((q) => (
-              <li key={q.nonce} className="border border-line p-2">
-                <div>
-                  {q.operation} · {q.riskTier} · {q.allowed ? "allowed" : "denied"}
-                </div>
-                <div>{q.reason}</div>
-                {q.reconcileReason && <div>Reconciliation: {q.reconcileReason}</div>}
-              </li>
-            ))}
-          </ul>
+        <div className="card bg-base-100 shadow-md">
+          <div className="card-body p-4">
+            <div className="font-semibold text-sm mb-2">Signed local decisions (IndexedDB)</div>
+            <ul className="text-xs space-y-2" data-testid="decision-log">
+              {queue.map((q) => (
+                <li key={q.nonce} className="border border-base-300 rounded-lg p-2">
+                  <div>
+                    {q.operation} · {q.riskTier} · {q.allowed ? "allowed" : "denied"}
+                  </div>
+                  <div>{q.reason}</div>
+                  {q.reconcileReason && <div>Reconciliation: {q.reconcileReason}</div>}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-        <div className="bg-white border border-line p-4 text-xs space-y-1" data-testid="activity-log">
+        <div className="card bg-base-100 shadow-md p-4 text-xs space-y-1" data-testid="activity-log">
           {log.map((l, i) => (
             <div key={i}>{l}</div>
           ))}

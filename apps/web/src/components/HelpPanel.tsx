@@ -8,18 +8,18 @@ export function HelpPanel({
   steps: string[];
 }) {
   return (
-    <aside className="bg-white border border-line p-4 fade-in-up">
-      <div className="text-sm font-semibold text-ink">{title}</div>
-      <ol className="mt-2 space-y-2">
-        {steps.map((step, i) => (
-          <li key={step} className="flex gap-3 text-sm text-slate-700">
-            <span className="shrink-0 w-5 h-5 rounded-full bg-navy text-white text-xs font-semibold flex items-center justify-center mt-0.5">
-              {i + 1}
-            </span>
-            <span>{step}</span>
-          </li>
-        ))}
-      </ol>
+    <aside className="card bg-base-100 shadow-md hover-lift fade-in-up h-full">
+      <div className="card-body p-5">
+        <h2 className="card-title text-base">{title}</h2>
+        <ol className="space-y-3 mt-1">
+          {steps.map((step, i) => (
+            <li key={step} className="flex gap-3 text-sm leading-snug">
+              <span className="badge badge-primary badge-sm shrink-0 mt-0.5">{i + 1}</span>
+              <span>{step}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
     </aside>
   );
 }

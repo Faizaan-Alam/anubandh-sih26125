@@ -90,9 +90,9 @@ export default function DivergencePage() {
       </PageHeader>
 
       <div className="grid lg:grid-cols-3 gap-4">
-        <div className="lg:col-span-2 bg-white border border-line p-4 space-y-3">
+        <div className="lg:col-span-2 card bg-base-100 shadow-md p-4 space-y-3">
           <div className="flex gap-2">
-            <input className="field" value={tokenId} onChange={(e) => setTokenId(e.target.value)} aria-label="Token id" />
+            <input className="input input-bordered w-full" value={tokenId} onChange={(e) => setTokenId(e.target.value)} aria-label="Token id" />
             <button className="btn btn-primary" onClick={load}>Load</button>
           </div>
           {openId ? (
@@ -100,17 +100,17 @@ export default function DivergencePage() {
           ) : (
             <Alert kind="info">No open divergence for this token. Load after two conflicting attestations.</Alert>
           )}
-          <label className="text-xs font-semibold text-slate-600">Divergence id</label>
-          <input className="field" value={divergenceId} onChange={(e) => setDivergenceId(e.target.value)} placeholder="divergence id" />
-          <label className="text-xs font-semibold text-slate-600">Accepted custodian after review</label>
-          <select className="field" value={custodian} onChange={(e) => setCustodian(e.target.value)}>
+          <label className="text-xs font-semibold opacity-80">Divergence id</label>
+          <input className="input input-bordered w-full" value={divergenceId} onChange={(e) => setDivergenceId(e.target.value)} placeholder="divergence id" />
+          <label className="text-xs font-semibold opacity-80">Accepted custodian after review</label>
+          <select className="select select-bordered w-full" value={custodian} onChange={(e) => setCustodian(e.target.value)}>
             {DEMO_ACCOUNTS.map((a) => (
               <option key={a.address} value={a.address}>{a.label}</option>
             ))}
           </select>
           <div className="flex flex-wrap gap-2">
-            <button className="btn btn-secondary" onClick={propose}>Propose reconciliation</button>
-            <button className="btn btn-navy" onClick={confirm}>Admin confirm</button>
+            <button className="btn btn-outline" onClick={propose}>Propose reconciliation</button>
+            <button className="btn btn-neutral" onClick={confirm}>Admin confirm</button>
           </div>
           {msg && <Alert kind="ok">{msg}</Alert>}
           {err && <Alert kind="err">{err}</Alert>}
@@ -125,12 +125,12 @@ export default function DivergencePage() {
         />
       </div>
 
-      <div className="bg-white border border-line overflow-auto">
+      <div className="card bg-base-100 shadow-md overflow-auto">
         {items.length === 0 ? (
-          <div className="px-4 py-6 text-sm text-slate-500">No divergence records loaded.</div>
+          <div className="px-4 py-6 text-sm opacity-60">No divergence records loaded.</div>
         ) : (
           <table className="w-full text-sm">
-            <thead className="bg-paper text-left">
+            <thead>
               <tr>
                 <th className="px-4 py-2">Id</th>
                 <th className="px-4 py-2">Attestations</th>
@@ -140,7 +140,7 @@ export default function DivergencePage() {
             </thead>
             <tbody>
               {items.map((row) => (
-                <tr key={row.id} className="border-t border-line table-row">
+                <tr key={row.id} className="border-t border-base-300 hover">
                   <td className="px-4 py-2">{row.id}</td>
                   <td className="px-4 py-2 font-mono text-xs">
                     {row.attestationA} vs {row.attestationB}

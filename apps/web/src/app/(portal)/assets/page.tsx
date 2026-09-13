@@ -70,20 +70,20 @@ export default function AssetsPage() {
       </PageHeader>
 
       <div className="grid lg:grid-cols-3 gap-4">
-        <div className="lg:col-span-2 bg-white border border-line p-4 space-y-3">
+        <div className="lg:col-span-2 card bg-base-100 shadow-md p-4 space-y-3">
           <div className="text-sm font-semibold">Mint (Admin only, real chain transaction)</div>
-          <p className="text-xs text-slate-600">
+          <p className="text-xs opacity-80">
             If you are not Admin, this button still sends the request. The PEP and the contract will reject it.
           </p>
-          <label className="text-xs font-semibold text-slate-600">Human-readable serial (hashed on-chain)</label>
+          <label className="text-xs font-semibold opacity-80">Human-readable serial (hashed on-chain)</label>
           <input
             data-testid="asset-identifier"
-            className="field"
+            className="input input-bordered w-full"
             value={identifier}
             onChange={(e) => setIdentifier(e.target.value)}
           />
-          <label className="text-xs font-semibold text-slate-600">Initial owner</label>
-          <select className="field" value={to} onChange={(e) => setTo(e.target.value)}>
+          <label className="text-xs font-semibold opacity-80">Initial owner</label>
+          <select className="select select-bordered w-full" value={to} onChange={(e) => setTo(e.target.value)}>
             {DEMO_ACCOUNTS.map((a) => (
               <option key={a.address} value={a.address}>
                 {a.label} {a.address}
@@ -91,7 +91,7 @@ export default function AssetsPage() {
             ))}
           </select>
           <label className="text-sm flex items-center gap-2">
-            <input type="checkbox" checked={highValue} onChange={(e) => setHighValue(e.target.checked)} />
+            <input type="checkbox" className="checkbox checkbox-primary checkbox-sm" checked={highValue} onChange={(e) => setHighValue(e.target.checked)} />
             High-value (separation of duties on quarantine release)
           </label>
           <button className="btn btn-primary" onClick={mint}>Mint asset NFT</button>
@@ -109,9 +109,9 @@ export default function AssetsPage() {
         />
       </div>
 
-      <div className="bg-white border border-line overflow-auto">
-        <table className="w-full text-sm">
-          <thead className="bg-paper text-left">
+      <div className="card bg-base-100 shadow-md overflow-auto">
+        <table className="table table-zebra">
+          <thead>
             <tr>
               <th className="px-4 py-2">Token</th>
               <th className="px-4 py-2">Identifier hash</th>
@@ -122,9 +122,9 @@ export default function AssetsPage() {
           </thead>
           <tbody>
             {items.map((a) => (
-              <tr key={a.tokenId} className="border-t border-line table-row">
+              <tr key={a.tokenId} className="border-t border-base-300 hover">
                 <td className="px-4 py-3">
-                  <Link className="text-accent font-semibold" href={`/assets/${a.tokenId}`}>#{a.tokenId}</Link>
+                  <Link className="text-primary font-semibold" href={`/assets/${a.tokenId}`}>#{a.tokenId}</Link>
                 </td>
                 <td className="px-4 py-3 font-mono text-xs">{a.assetIdentifier.slice(0, 18)}...</td>
                 <td className="px-4 py-3 space-y-1">

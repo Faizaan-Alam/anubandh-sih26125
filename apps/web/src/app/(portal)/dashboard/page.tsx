@@ -60,26 +60,28 @@ export default function DashboardPage() {
       <FlowSteps steps={FLOW} />
 
       <div className="grid lg:grid-cols-3 gap-4">
-        <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-white border border-line p-4 fade-in-up">
-            <div className="text-xs uppercase tracking-wide text-slate-500">Registered assets</div>
-            <div className="text-3xl font-bold mt-1">{assets.length}</div>
-            <Link className="text-xs text-accent font-semibold" href="/assets">
-              Open registry
-            </Link>
+        <div className="lg:col-span-2 stats stats-vertical sm:stats-horizontal shadow-md bg-base-100 w-full fade-in-up">
+          <div className="stat">
+            <div className="stat-title">Registered assets</div>
+            <div className="stat-value text-primary">{assets.length}</div>
+            <div className="stat-desc">
+              <Link className="link link-primary" href="/assets">
+                Open registry
+              </Link>
+            </div>
           </div>
-          <div className="bg-white border border-line p-4 fade-in-up" style={{ animationDelay: "40ms" }}>
-            <div className="text-xs uppercase tracking-wide text-slate-500">
+          <div className="stat">
+            <div className="stat-title">
               <Term label="Quarantine" hint="Non-transferable state after conflicting observations." />
             </div>
-            <div className="text-3xl font-bold mt-1">{quarantined}</div>
-            <div className="text-xs text-slate-500">Blocked from transfer</div>
+            <div className="stat-value text-error">{quarantined}</div>
+            <div className="stat-desc">Blocked from transfer</div>
           </div>
-          <div className="bg-white border border-line p-4 fade-in-up" style={{ animationDelay: "80ms" }}>
-            <div className="text-xs uppercase tracking-wide text-slate-500">
+          <div className="stat">
+            <div className="stat-title">
               <Term label="Confidence" hint="Evidence weight x freshness decay x divergence penalty, 0-100." />
             </div>
-            <div className="mt-3">
+            <div className="stat-value text-lg mt-2">
               <ConfidenceMeter score={assets[0]?.confidence.score ?? avg} label="First listed / average" />
             </div>
           </div>
@@ -116,57 +118,61 @@ export default function DashboardPage() {
 
       {error && <Alert kind="err">{error}</Alert>}
 
-      <div className="bg-white border border-line overflow-auto">
-        <div className="px-4 py-3 border-b border-line flex items-center justify-between">
-          <div className="font-semibold text-sm">Assets on chain</div>
-          <div className="text-xs text-slate-500">Hover a term with ? for a definition</div>
+      <div className="card bg-base-100 shadow-md">
+        <div className="card-body p-0">
+          <div className="px-4 py-3 border-b border-base-300 flex items-center justify-between">
+            <div className="font-semibold">Assets on chain</div>
+            <div className="text-xs opacity-60">Hover a term with ? for a definition</div>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="table table-zebra">
+              <thead>
+                <tr>
+                  <th>Token</th>
+                  <th>Owner</th>
+                  <th>Custodian</th>
+                  <th>Confidence</th>
+                  <th>State</th>
+                </tr>
+              </thead>
+              <tbody>
+                {assets.map((a) => (
+                  <tr key={a.tokenId} className="hover">
+                    <td>
+                      <Link className="link link-primary font-semibold" href={`/assets/${a.tokenId}`}>
+                        #{a.tokenId}
+                      </Link>
+                      {a.assetIdentifier.includes("SEED") && (
+                        <span className="ml-2">
+                          <StatusBadge value="seed" />
+                        </span>
+                      )}
+                    </td>
+                    <td>
+                      <AddressChip address={a.owner} />
+                    </td>
+                    <td>
+                      <AddressChip address={a.custodian} />
+                    </td>
+                    <td className="w-56">
+                      <ConfidenceMeter score={a.confidence.score} />
+                    </td>
+                    <td>
+                      <StatusBadge value={a.quarantined ? "Quarantined" : "Clear"} />
+                    </td>
+                  </tr>
+                ))}
+                {assets.length === 0 && (
+                  <tr>
+                    <td className="py-6 opacity-60" colSpan={5}>
+                      No assets minted yet. Use the Assets page (Admin) or run scripts/demo-setup.ts.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
-        <table className="w-full text-sm">
-          <thead className="bg-paper text-left">
-            <tr>
-              <th className="px-4 py-2">Token</th>
-              <th className="px-4 py-2">Owner</th>
-              <th className="px-4 py-2">Custodian</th>
-              <th className="px-4 py-2">Confidence</th>
-              <th className="px-4 py-2">State</th>
-            </tr>
-          </thead>
-          <tbody>
-            {assets.map((a) => (
-              <tr key={a.tokenId} className="border-t border-line table-row">
-                <td className="px-4 py-3">
-                  <Link className="text-accent font-semibold" href={`/assets/${a.tokenId}`}>
-                    #{a.tokenId}
-                  </Link>
-                  {a.assetIdentifier.includes("SEED") && (
-                    <span className="ml-2">
-                      <StatusBadge value="seed" />
-                    </span>
-                  )}
-                </td>
-                <td className="px-4 py-3">
-                  <AddressChip address={a.owner} />
-                </td>
-                <td className="px-4 py-3">
-                  <AddressChip address={a.custodian} />
-                </td>
-                <td className="px-4 py-3 w-56">
-                  <ConfidenceMeter score={a.confidence.score} />
-                </td>
-                <td className="px-4 py-3">
-                  <StatusBadge value={a.quarantined ? "Quarantined" : "Clear"} />
-                </td>
-              </tr>
-            ))}
-            {assets.length === 0 && (
-              <tr>
-                <td className="px-4 py-6 text-slate-500" colSpan={5}>
-                  No assets minted yet. Use the Assets page (Admin) or run scripts/demo-setup.ts.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
       </div>
     </div>
   );

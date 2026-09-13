@@ -75,16 +75,16 @@ export default function AuditPage() {
       </PageHeader>
 
       <div className="grid lg:grid-cols-3 gap-4">
-        <div className="lg:col-span-2 bg-white border border-line p-4 flex flex-wrap gap-3 items-end">
+        <div className="lg:col-span-2 card bg-base-100 shadow-md p-4 flex flex-wrap gap-3 items-end">
           <label className="text-sm">
             Token
-            <input className="field mt-1" value={tokenId} onChange={(e) => setTokenId(e.target.value)} />
+            <input className="input input-bordered w-full mt-1" value={tokenId} onChange={(e) => setTokenId(e.target.value)} />
           </label>
           <label className="text-sm">
             Point in time
-            <input type="datetime-local" className="field mt-1" value={at} onChange={(e) => setAt(e.target.value)} />
+            <input type="datetime-local" className="input input-bordered w-full mt-1" value={at} onChange={(e) => setAt(e.target.value)} />
           </label>
-          <button className="btn btn-secondary" onClick={loadEvents}>Load event history</button>
+          <button className="btn btn-outline" onClick={loadEvents}>Load event history</button>
           <button className="btn btn-primary" onClick={reconstruct}>Reconstruct</button>
         </div>
         <HelpPanel
@@ -100,16 +100,16 @@ export default function AuditPage() {
       {err && <Alert kind="err">{err}</Alert>}
 
       <div className="grid md:grid-cols-2 gap-4">
-        <div className="bg-white border border-line overflow-auto min-h-64">
-          <div className="px-4 py-2 border-b border-line text-sm font-semibold">Event history</div>
+        <div className="card bg-base-100 shadow-md overflow-auto min-h-64">
+          <div className="px-4 py-2 border-b border-base-300 text-sm font-semibold">Event history</div>
           {events.length === 0 ? (
-            <div className="px-4 py-6 text-sm text-slate-500">No events loaded yet.</div>
+            <div className="px-4 py-6 text-sm opacity-60">No events loaded yet.</div>
           ) : (
-            <ul className="divide-y divide-line text-sm">
+            <ul className="divide-y divide-base-300 text-sm">
               {events.map((ev) => (
                 <li key={ev.id} className="px-4 py-2 fade-in">
                   <div className="font-semibold">{ev.eventName}</div>
-                  <div className="text-xs text-slate-500">
+                  <div className="text-xs opacity-60">
                     {ev.contractName} · {new Date(ev.timestamp).toLocaleString()}
                   </div>
                 </li>
@@ -117,12 +117,12 @@ export default function AuditPage() {
             </ul>
           )}
         </div>
-        <div className="bg-white border border-line p-4 min-h-64 space-y-3">
+        <div className="card bg-base-100 shadow-md p-4 min-h-64 space-y-3">
           <div className="text-sm font-semibold">Reconstructed state</div>
-          {!pit && <div className="text-sm text-slate-500">Pick a time and click Reconstruct.</div>}
+          {!pit && <div className="text-sm opacity-60">Pick a time and click Reconstruct.</div>}
           {pit && (
             <div className="space-y-2 text-sm fade-in">
-              <div className="text-xs text-slate-500">{pit.reconstructedFrom}</div>
+              <div className="text-xs opacity-60">{pit.reconstructedFrom}</div>
               <div className="flex justify-between">
                 <span>Owner</span>
                 {pit.owner ? <AddressChip address={pit.owner} /> : "-"}
@@ -137,7 +137,7 @@ export default function AuditPage() {
               </div>
               {pit.confidence && <ConfidenceMeter score={pit.confidence.score} />}
               {pit.lastAttestation && (
-                <div className="text-xs text-slate-600">
+                <div className="text-xs opacity-80">
                   Last attestation: {pit.lastAttestation.evidenceTier}
                 </div>
               )}

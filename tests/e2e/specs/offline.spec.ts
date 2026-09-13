@@ -18,5 +18,5 @@ test("offline PWA allows low-risk scan and denies stale high-risk transfer", asy
 
   await context.setOffline(false);
   await page.getByTestId("reconcile").click();
-  await expect(page.getByText(/Reconciled/i)).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByTestId("activity-log")).toContainText(/Reconciled/i, { timeout: 30_000 });
 });

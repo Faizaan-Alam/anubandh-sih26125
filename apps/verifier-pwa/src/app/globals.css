@@ -5,14 +5,12 @@
 
 body {
   font-family: "Source Sans 3", "Segoe UI", sans-serif;
-  background: #f4f6f8;
-  color: #122033;
 }
 
 @keyframes fade-in-up {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -21,29 +19,11 @@ body {
 }
 
 .fade-in-up {
-  animation: fade-in-up 280ms ease-out both;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem 0.85rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  border: 1px solid transparent;
-  transition: background-color 120ms ease, transform 120ms ease;
-}
-
-.btn:hover {
-  transform: translateY(-1px);
+  animation: fade-in-up 400ms ease-out both;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .fade-in-up,
-  .btn {
+  .fade-in-up {
     animation: none !important;
-    transition: none !important;
-    transform: none !important;
   }
 }

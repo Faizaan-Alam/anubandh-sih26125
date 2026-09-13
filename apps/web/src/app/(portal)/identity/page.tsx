@@ -80,25 +80,25 @@ export default function IdentityPage() {
       </PageHeader>
 
       <div className="grid lg:grid-cols-3 gap-4">
-        <div className="lg:col-span-2 bg-white border border-line p-4 space-y-3">
-          <label className="text-xs font-semibold text-slate-600">DID to inspect</label>
-          <input className="field font-mono text-sm" value={did} onChange={(e) => setDid(e.target.value)} />
+        <div className="lg:col-span-2 card bg-base-100 shadow-md p-4 space-y-3">
+          <label className="text-xs font-semibold opacity-80">DID to inspect</label>
+          <input className="input input-bordered w-full font-mono text-sm" value={did} onChange={(e) => setDid(e.target.value)} />
           <div className="flex flex-wrap gap-2">
             <button className="btn btn-primary" onClick={lookup}>Lookup</button>
-            <button className="btn btn-secondary" onClick={register}>Register my DID</button>
-            <button className="btn btn-danger" onClick={revoke}>Revoke (Admin)</button>
+            <button className="btn btn-outline" onClick={register}>Register my DID</button>
+            <button className="btn btn-error btn-outline" onClick={revoke}>Revoke (Admin)</button>
           </div>
           {msg && <Alert kind="ok">{msg}</Alert>}
           {err && <Alert kind="err">{err}</Alert>}
           {record && (
-            <dl className="grid grid-cols-2 gap-2 text-sm border border-line bg-paper p-3 fade-in">
-              <dt className="text-slate-500">Status</dt>
+            <dl className="grid grid-cols-2 gap-2 text-sm border border-base-300 bg-base-200 p-3 fade-in">
+              <dt className="opacity-60">Status</dt>
               <dd><StatusBadge value={String(record.status)} /></dd>
-              <dt className="text-slate-500">Controller</dt>
+              <dt className="opacity-60">Controller</dt>
               <dd><AddressChip address={String(record.controller)} /></dd>
-              <dt className="text-slate-500">Registered at</dt>
+              <dt className="opacity-60">Registered at</dt>
               <dd className="font-mono text-xs">{String(record.registeredAt)}</dd>
-              <dt className="text-slate-500">Revoked at</dt>
+              <dt className="opacity-60">Revoked at</dt>
               <dd className="font-mono text-xs">{String(record.revokedAt || 0)}</dd>
             </dl>
           )}
@@ -113,15 +113,15 @@ export default function IdentityPage() {
         />
       </div>
 
-      <div className="bg-white border border-line p-4">
+      <div className="card bg-base-100 shadow-md p-4">
         <div className="flex items-center gap-2 text-sm font-semibold">
           <StatusBadge value="seed" /> Demo identities (Anvil accounts)
         </div>
-        <ul className="mt-3 divide-y divide-line">
+        <ul className="mt-3 divide-y divide-base-300">
           {DEMO_ACCOUNTS.map((a) => (
             <li key={a.address} className="py-2 flex flex-wrap items-center justify-between gap-2 text-sm">
               <span className="font-semibold">{a.label}</span>
-              <span className="font-mono text-xs text-slate-600">{formatDid(CHAIN_ID, a.address)}</span>
+              <span className="font-mono text-xs opacity-80">{formatDid(CHAIN_ID, a.address)}</span>
             </li>
           ))}
         </ul>

@@ -74,17 +74,17 @@ export default function RolesPage() {
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-2">
         {Object.entries(ROLE_HELP).map(([name, text]) => (
-          <div key={name} className="bg-white border border-line p-3 fade-in-up">
+          <div key={name} className="card bg-base-100 shadow-md p-3 fade-in-up">
             <StatusBadge value={name} />
-            <p className="text-xs text-slate-600 mt-2 leading-snug">{text}</p>
+            <p className="text-xs opacity-80 mt-2 leading-snug">{text}</p>
           </div>
         ))}
       </div>
 
       <div className="grid lg:grid-cols-3 gap-4">
-        <div className="lg:col-span-2 bg-white border border-line p-4 space-y-3">
+        <div className="lg:col-span-2 card bg-base-100 shadow-md p-4 space-y-3">
           <label className="text-sm font-semibold">Account</label>
-          <select className="field" value={account} onChange={(e) => setAccount(e.target.value)}>
+          <select className="select select-bordered w-full" value={account} onChange={(e) => setAccount(e.target.value)}>
             {DEMO_ACCOUNTS.map((a) => (
               <option key={a.address} value={a.address}>
                 {a.label} {a.address}
@@ -92,7 +92,7 @@ export default function RolesPage() {
             ))}
           </select>
           <label className="text-sm font-semibold">Role</label>
-          <select className="field" value={role} onChange={(e) => setRole(e.target.value as typeof role)}>
+          <select className="select select-bordered w-full" value={role} onChange={(e) => setRole(e.target.value as typeof role)}>
             <option>Admin</option>
             <option>Manager</option>
             <option>Auditor</option>
@@ -100,8 +100,8 @@ export default function RolesPage() {
           </select>
           <div className="flex flex-wrap gap-2">
             <button className="btn btn-primary" onClick={lookup}>Read on-chain role</button>
-            <button className="btn btn-secondary" onClick={grant}>Grant</button>
-            <button className="btn btn-danger" onClick={revoke}>Revoke</button>
+            <button className="btn btn-outline" onClick={grant}>Grant</button>
+            <button className="btn btn-error btn-outline" onClick={revoke}>Revoke</button>
           </div>
           {msg && <Alert kind="ok">{msg}</Alert>}
           {err && <Alert kind="err">{err}</Alert>}
@@ -110,7 +110,7 @@ export default function RolesPage() {
               <div>
                 Current role: <StatusBadge value={String(info.role)} />
               </div>
-              <div className="text-xs text-slate-500">{String(info.roleSource)}</div>
+              <div className="text-xs opacity-60">{String(info.roleSource)}</div>
             </div>
           )}
         </div>

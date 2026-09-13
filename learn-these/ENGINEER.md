@@ -2,11 +2,11 @@
 
 How ANUBANDH was built, in what order, with which tools, and how work flows through the system.
 
-If you want a non-engineer tour, read `UNDERSTANDING.md` first. This file is the engineering story.
+If you want a non-engineer tour, read `UNDERSTANDING.md` first. This file is the engineering story. All of these files sit in `learn-these/`.
 
-- Product spec: `docs/Anubandh_New_Synopsis_No_ESP32.docx`
+- Product spec: `Anubandh_New_Synopsis_No_ESP32.docx`
 - File-level architecture: `ARCHITECTURE.md`
-- Run locally: `README.md`
+- Run locally: `../README.md`
 - Click-through demo: `DEMO.md`
 - Vercel: `DEPLOY.md`
 

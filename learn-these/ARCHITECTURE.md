@@ -1,6 +1,6 @@
 # ANUBANDH architecture
 
-Authoritative product spec: `docs/Anubandh_New_Synopsis_No_ESP32.docx` (software-first, no ESP32). This document describes the implementation.
+Authoritative product spec: `Anubandh_New_Synopsis_No_ESP32.docx` in this folder (software-first, no ESP32). This document describes the implementation.
 
 ## Synopsis resolutions
 

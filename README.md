@@ -43,17 +43,22 @@ Demo Anvil keys are public Foundry test keys. They are labeled as demo/seed data
 
 ## Deploy on Vercel
 
-The portal and verifier can live on Vercel. The API, indexer, Postgres, and chain cannot. Step-by-step: **`DEPLOY.md`**.
+The portal and verifier can live on Vercel. The API, indexer, Postgres, and chain cannot. Step-by-step: **`learn-these/DEPLOY.md`**.
 
-## Read this first
+## Learn these
 
-If you want a plain-language tour of identities, roles, assets, attestations, quarantine, offline mode, and how to click through the demo, open **`UNDERSTANDING.md`**.
+Every learning and design document is in the **`learn-these/`** folder. Open **`learn-these/README.md`** for the reading order.
 
-If you want the engineering timeline, tech stack, and workflows (how it was built, in what order), open **`ENGINEER.md`**.
+- Product tour: `learn-these/UNDERSTANDING.md`
+- How it was built: `learn-these/ENGINEER.md`
+- Architecture: `learn-these/ARCHITECTURE.md`
+- Live demo script: `learn-these/DEMO.md`
+- Security model: `learn-these/SECURITY.md`
+- Honest gaps: `learn-these/KNOWN_LIMITATIONS.md`
 
 ## Repository layout
 
-See `ARCHITECTURE.md` for the three data-flow chains and file-level mapping.
+See `learn-these/ARCHITECTURE.md` for the three data-flow chains and file-level mapping.
 
 ## Setup (from a clean clone)
 
@@ -95,15 +100,15 @@ bash scripts/check-emdash.sh
 
 ## Demo
 
-Follow `DEMO.md` for the five-act script (identity/RBAC, asset lifecycle, divergence, offline mode, trust decay and audit).
+Follow `learn-these/DEMO.md` for the five-act script (identity/RBAC, asset lifecycle, divergence, offline mode, trust decay and audit).
 
 ## Security
 
-See `SECURITY.md`. Contract-level RBAC is the security boundary. The UI hiding a button is not.
+See `learn-these/SECURITY.md`. Contract-level RBAC is the security boundary. The UI hiding a button is not.
 
 ## Known limitations
 
-See `KNOWN_LIMITATIONS.md`.
+See `learn-these/KNOWN_LIMITATIONS.md`.
 
 ## License
 

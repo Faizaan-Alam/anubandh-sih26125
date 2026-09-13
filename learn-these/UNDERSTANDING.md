@@ -2,13 +2,14 @@
 
 Read this file first. It explains the project in plain language: what it is, why each piece exists, how a request actually moves, and what you can click in the demo.
 
-Other docs go deeper:
+Other docs in this folder go deeper:
 
-- `README.md`: setup and stack
+- `../README.md`: setup and stack
 - `ARCHITECTURE.md`: file-level design
 - `DEMO.md`: five-act judge script
 - `SECURITY.md`: what cryptography actually proves
 - `KNOWN_LIMITATIONS.md`: honest gaps
+- `ENGINEER.md`: build timeline and workflows
 
 ---
 

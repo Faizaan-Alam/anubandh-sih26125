@@ -14,6 +14,7 @@ All ANUBANDH learning and design documents live in this folder. Start at the top
 | 8 | [SCHEMA.md](SCHEMA.md) | PostgreSQL tables used as an off-chain index |
 | 9 | [Anubandh_New_Synopsis_No_ESP32.docx](Anubandh_New_Synopsis_No_ESP32.docx) | Authoritative SIH synopsis (software-first, no ESP32) |
 | 10 | [ANUBANDH_Presentation_Briefing.pdf](ANUBANDH_Presentation_Briefing.pdf) | Tomorrow's talk: problem, solution, what to say, demo script, Q and A |
+| 11 | [ANUBANDH_Simple_Explainer.pdf](ANUBANDH_Simple_Explainer.pdf) | Same story in very simple words (about age-13 language) |
 
 **Live portal:** https://anubandh-web.vercel.app/
 

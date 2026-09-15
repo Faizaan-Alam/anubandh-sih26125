@@ -13,6 +13,7 @@ All ANUBANDH learning and design documents live in this folder. Start at the top
 | 7 | [DEPLOY.md](DEPLOY.md) | Vercel for the UI only. API, indexer, and chain stay elsewhere. |
 | 8 | [SCHEMA.md](SCHEMA.md) | PostgreSQL tables used as an off-chain index |
 | 9 | [Anubandh_New_Synopsis_No_ESP32.docx](Anubandh_New_Synopsis_No_ESP32.docx) | Authoritative SIH synopsis (software-first, no ESP32) |
+| 10 | [ANUBANDH_Presentation_Briefing.pdf](ANUBANDH_Presentation_Briefing.pdf) | Tomorrow's talk: problem, solution, what to say, demo script, Q and A |
 
 **Live portal:** https://anubandh-web.vercel.app/
 
